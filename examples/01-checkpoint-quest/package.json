@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node --test checkpoint.test.mjs"
+    "test": "node --test *.test.mjs"
   },
   "engines": {
     "node": ">=20"
