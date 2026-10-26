@@ -11,51 +11,82 @@
 
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 
-A **location games cookbook** for quest design: checkpoints, geofenced objectives, kit-gated content, and leaderboards. This is the cookbook only ZQM Labs could write — patterns for games played in real places, drawn from the Hunt for Wisps style of play: small quests, seasonal editions, and family-friendly objectives. It is intended for designers of location-based games. Validate each pattern against your own game and operating environment before adopting it. Examples use synthetic places and synthetic players only — never real player data, and never anything describing player telemetry.
+A **location games cookbook** for quest design: checkpoints, geofenced objectives, kit-gated content, and leaderboards. This is the cookbook only ZQM Labs could write — practical patterns for games played in real places, drawn from the Hunt for Wisps style of play: small quests, seasonal editions, and family-friendly objectives. Examples use synthetic coordinates and synthetic players only. Never commit real player data, precise private locations, credentials, or telemetry.
 
 ## Repository role and status
 
-**Status:** Active, public — seeding. Pattern passes land in follow-up work; the table below lists what is planned, not what is already written.
+**Status:** Active, public — first executable pattern available. The pattern table below distinguishes implemented content from planned work.
 
-**What this repository is:** Location-game design patterns — quests, geofencing, kit gating, and leaderboards.
+**What this repository is:** Location-game design patterns — quest progression, geofencing, kit gating, safety, and seasonal leaderboards.
 
-**What it contributes:** Part of the ZQM Labs game-development portfolio, and a sibling to the ZQM Computing geospatial cookbook series.
+**What it contributes:** Part of the ZQM Labs game-development portfolio. It complements, rather than duplicates, the ZQM Computing geospatial cookbook series: this repository focuses on player experience and operational rules for games played in real places.
 
-**Standing:** This repository is maintained independently. Automated checks cover only the paths and environments configured in its workflows; they do not establish production readiness or operational certification.
+**Quality bar:** Examples should be runnable, deterministic where possible, explicit about assumptions, and honest about client-side limitations. Automated checks cover only configured paths and environments; passing them is not production certification.
 
 ## Who this is for
 
-Designers of location-based games, especially family-friendly quests in real places.
+Designers and developers building location-based games, especially family-friendly quests in public, accessible places.
 
 ## Prerequisites
 
 - A web game client with map and geolocation support
-- Synthetic quest content for examples (no real player data, no real private places)
-- A backend for kits and leaderboards if running gated or scored quests (see pocketbase-cookbook)
+- Node.js 20+ for the checkpoint example tests
+- Synthetic quest content for examples (no real player data or private places)
+- A backend for kit access and durable leaderboards if running gated or scored quests (see the [PocketBase Cookbook](https://github.com/ZQM-Labs/pocketbase-cookbook))
 
-## Patterns (planned)
+## Patterns
 
-| # | Example | What it will demonstrate |
-|---|---------|--------------------------|
-| 01 | `01-checkpoint-quest` | A checkpoint quest: ordered stops, arrival checks, and completion |
-| 02 | `02-geofenced-objective` | Geofenced objectives with arrival radius, drift tolerance, and failure behavior |
-| 03 | `03-kit-gated-content` | Kit-gated quests: purchase, unlock, and access checks |
-| 04 | `04-leaderboard-seasonal` | Seasonal leaderboards and limited-window editions (e.g. a Halloween window) |
+| # | Example | Status | What it demonstrates |
+|---|---|---|---|
+| 01 | [Checkpoint quest](examples/01-checkpoint-quest/) | Implemented | Ordered-stop foundation, geodesic distance, accuracy threshold, error states, deterministic tests, and safe fallback guidance |
+| 02 | `02-geofenced-objective` | Planned | Arrival radius, drift tolerance, retries, and failure behavior |
+| 03 | `03-kit-gated-content` | Planned | Purchase-to-unlock flow with server-side authorization boundaries |
+| 04 | `04-leaderboard-seasonal` | Planned | Seasonal editions, time windows, score validation, and privacy-aware ranking |
+
+## Quick start
+
+Run the implemented checkpoint example tests:
+
+```sh
+cd examples/01-checkpoint-quest
+npm test
+```
+
+The implementation has no third-party dependencies. See the [checkpoint recipe](examples/01-checkpoint-quest/README.md) for browser integration, result statuses, limitations, and safety guidance.
 
 ## Repository layout
 
 ```text
 location-games-cookbook/
-├── examples/  # one directory per pattern
+├── examples/
+│   └── 01-checkpoint-quest/
+│       ├── checkpoint.js
+│       ├── checkpoint.test.mjs
+│       ├── package.json
+│       └── README.md
 ├── README.md
 └── LICENSE
 ```
 
+## Engineering and safety principles
+
+- Treat geolocation as a fallible sensor, not a source of truth.
+- Explain location permission requests and provide retry and approved manual-recovery paths.
+- Never rely on client-side checks to authorize paid content, prizes, or durable score changes.
+- Use public, permitted, accessible locations; do not encourage trespass or unsafe movement.
+- Minimize precise location collection, avoid unnecessary retention, and use synthetic data in examples.
+- Pin dependencies only when a pattern actually needs them; document tested versions and reproduce commands.
+- State what was tested. Do not imply runtime or production validation from documentation-only review.
+
 ## Roadmap
 
-- First pattern pass: checkpoint quest (01), then geofenced objectives (02)
-- Second pass: kit gating (03) and seasonal leaderboards (04)
+1. Add a geofenced-objective pattern covering GPS drift, poor accuracy, timeouts, and accessible fallback.
+2. Add a kit-gated content example that demonstrates server-side authorization and replay-safe unlocks.
+3. Add a seasonal leaderboard example with server-side score validation, close times, and privacy controls.
+4. Add CI to run example tests and validate Markdown links as the executable pattern set grows.
 
 ## Contributing
 
-A contributing guide lands with the first pattern pass. Report security issues to <zqmcomputing@gmail.com> — please do not open a public issue for those.
+Contributions should include a runnable example or a clearly scoped design recipe, exact test commands, synthetic data, known limitations, and a short safety/privacy review. Keep changes focused and avoid presenting planned patterns as implemented.
+
+Report security issues to <zqmcomputing@gmail.com> — please do not open a public issue for those.
