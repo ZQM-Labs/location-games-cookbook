@@ -5,7 +5,9 @@ A dependency-free reference implementation for deciding whether a browser-provid
 ## What is included
 
 - `checkpoint.js` — pure great-circle distance calculation and checkpoint evaluation.
+- `geofence.js` — freshness-aware wrapper that rejects stale and future-dated fixes before evaluating a checkpoint.
 - `checkpoint.test.mjs` — deterministic tests for arrival, outside-radius fixes, poor accuracy, malformed input, invalid configuration, and the antimeridian.
+- `geofence.test.mjs` — deterministic freshness, future-timestamp, and accuracy regression tests.
 - `package.json` — a minimal Node.js test command; no third-party dependencies.
 
 ## Run the tests
@@ -21,7 +23,7 @@ npm test
 Serve this example over HTTPS (or use localhost during development). Browser geolocation generally requires a secure context and explicit user permission.
 
 ```js
-import { evaluateCheckpoint } from "./checkpoint.js";
+import { evaluateFreshCheckpoint } from "./geofence.js";
 
 function getPosition(options = {}) {
   return new Promise((resolve, reject) => {
@@ -43,13 +45,15 @@ const target = { lat: 0, lng: 0 }; // synthetic example only
 
 try {
   const fix = await getPosition();
-  const result = evaluateCheckpoint({
+  const result = evaluateFreshCheckpoint({
     target,
     position: {
       lat: fix.coords.latitude,
       lng: fix.coords.longitude,
       accuracy: fix.coords.accuracy,
     },
+    fixTimestampMs: fix.timestamp,
+    nowMs: Date.now(),
     arrivalRadiusMeters: 30,
     maxAccuracyMeters: 50,
   });
@@ -57,6 +61,10 @@ try {
   if (result.status === "arrived") {
     // Update local presentation. Ask the server to validate any real unlock.
     console.info("Checkpoint reached.");
+  } else if (result.status === "stale_position") {
+    console.info("Location fix is too old; request a fresh position and retry.");
+  } else if (result.status === "future_timestamp") {
+    console.info("Location timestamp is invalid; request a fresh position and retry.");
   } else if (result.status === "poor_accuracy") {
     console.info("Location is not precise enough; move to a clearer area and retry.");
   } else if (result.status === "outside_radius") {
@@ -75,6 +83,7 @@ try {
 
 - **`arrived`** — distance is within the configured radius and reported accuracy is acceptable. Show arrival, but validate protected rewards server-side.
 - **`outside_radius`** — the fix is usable but outside the radius. Show a neutral retry prompt.
+- **`stale_position` / `future_timestamp` / `invalid_timestamp`** — reject a fix whose timestamp is too old, in the future, or not a valid finite number; request a fresh fix and offer recovery.
 - **`poor_accuracy`** — reported accuracy exceeds the configured maximum. Ask the player to wait or move to a clearer area, then retry.
 - **`invalid_target` / `invalid_position`** — coordinates or accuracy are malformed. Fail closed and offer recovery.
 - **`invalid_configuration`** — radius or accuracy configuration is invalid. Treat this as a developer/configuration error, not a player failure.
