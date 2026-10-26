@@ -15,7 +15,7 @@ A **location games cookbook** for quest design: checkpoints, geofenced objective
 
 ## Repository role and status
 
-**Status:** Active, public — first executable pattern available. The pattern table below distinguishes implemented content from planned work.
+**Status:** Active, public — first executable pattern available. The pattern list distinguishes implemented content from planned work.
 
 **What this repository is:** Location-game design patterns — quest progression, geofencing, kit gating, safety, and seasonal leaderboards.
 
@@ -36,12 +36,21 @@ Designers and developers building location-based games, especially family-friend
 
 ## Patterns
 
-| # | Example | Status | What it demonstrates |
-|---|---|---|---|
-| 01 | [Checkpoint quest](examples/01-checkpoint-quest/) | Implemented | Ordered-stop foundation, geodesic distance, accuracy threshold, error states, deterministic tests, and safe fallback guidance |
-| 02 | `02-geofenced-objective` | Planned | Arrival radius, drift tolerance, retries, and failure behavior |
-| 03 | `03-kit-gated-content` | Planned | Purchase-to-unlock flow with server-side authorization boundaries |
-| 04 | `04-leaderboard-seasonal` | Planned | Seasonal editions, time windows, score validation, and privacy-aware ranking |
+### 01 — Checkpoint quest (implemented)
+
+[Open the checkpoint recipe](examples/01-checkpoint-quest/). Includes ordered-stop foundations, great-circle distance, accuracy thresholds, explicit error states, deterministic tests, browser integration, and safe fallback guidance.
+
+### 02 — Geofenced objective (planned)
+
+Arrival radius, GPS drift tolerance, retries, poor-accuracy behavior, and accessible fallback.
+
+### 03 — Kit-gated content (planned)
+
+Purchase-to-unlock flow with server-side authorization boundaries and replay-safe unlock operations.
+
+### 04 — Seasonal leaderboard (planned)
+
+Season windows, server-side score validation, closing behavior, and privacy-aware rankings.
 
 ## Quick start
 
@@ -58,6 +67,7 @@ The implementation has no third-party dependencies. See the [checkpoint recipe](
 
 ```text
 location-games-cookbook/
+├── .github/workflows/examples.yml
 ├── examples/
 │   └── 01-checkpoint-quest/
 │       ├── checkpoint.js
@@ -83,7 +93,7 @@ location-games-cookbook/
 1. Add a geofenced-objective pattern covering GPS drift, poor accuracy, timeouts, and accessible fallback.
 2. Add a kit-gated content example that demonstrates server-side authorization and replay-safe unlocks.
 3. Add a seasonal leaderboard example with server-side score validation, close times, and privacy controls.
-4. Add CI to run example tests and validate Markdown links as the executable pattern set grows.
+4. Expand CI to validate Markdown links and every new executable pattern as the cookbook grows.
 
 ## Contributing
 
