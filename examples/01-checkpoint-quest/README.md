@@ -73,13 +73,11 @@ try {
 
 ## Result contract
 
-| Status | Meaning | Suggested UI behavior |
-|---|---|---|
-| `arrived` | Distance is within the configured radius and reported accuracy is acceptable. | Show arrival; validate protected rewards server-side. |
-| `outside_radius` | Fix is usable but outside the radius. | Show a neutral retry prompt. |
-| `poor_accuracy` | Reported accuracy exceeds the configured maximum. | Ask the player to wait or move to a clearer area, then retry. |
-| `invalid_target` / `invalid_position` | Coordinates or accuracy are malformed. | Fail closed and offer recovery. |
-| `invalid_configuration` | Radius or accuracy configuration is invalid. | Treat as a developer/configuration error, not a player failure. |
+- **`arrived`** — distance is within the configured radius and reported accuracy is acceptable. Show arrival, but validate protected rewards server-side.
+- **`outside_radius`** — the fix is usable but outside the radius. Show a neutral retry prompt.
+- **`poor_accuracy`** — reported accuracy exceeds the configured maximum. Ask the player to wait or move to a clearer area, then retry.
+- **`invalid_target` / `invalid_position`** — coordinates or accuracy are malformed. Fail closed and offer recovery.
+- **`invalid_configuration`** — radius or accuracy configuration is invalid. Treat this as a developer/configuration error, not a player failure.
 
 ## Design and safety notes
 
