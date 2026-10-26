@@ -40,9 +40,9 @@ Designers and developers building location-based games, especially family-friend
 
 [Open the checkpoint recipe](examples/01-checkpoint-quest/). Includes ordered-stop foundations, great-circle distance, accuracy thresholds, explicit error states, deterministic tests, browser integration, and safe fallback guidance.
 
-### 02 — Geofenced objective (planned)
+### 02 — Freshness-aware geofenced objective (implemented helper)
 
-Arrival radius, GPS drift tolerance, retries, poor-accuracy behavior, and accessible fallback.
+The checkpoint recipe now includes `geofence.js`, which rejects stale and future-dated fixes before delegating to the existing distance/accuracy evaluator. It includes deterministic tests for fix freshness and documents retry/fallback behavior. This is a client-side evaluation helper, not proof of physical presence or authorization.
 
 ### 03 — Kit-gated content (planned)
 
@@ -72,6 +72,8 @@ location-games-cookbook/
 │   └── 01-checkpoint-quest/
 │       ├── checkpoint.js
 │       ├── checkpoint.test.mjs
+│       ├── geofence.js
+│       ├── geofence.test.mjs
 │       ├── package.json
 │       └── README.md
 ├── README.md
