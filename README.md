@@ -92,7 +92,7 @@ location-games-cookbook/
 
 ## Roadmap
 
-1. Add a geofenced-objective pattern covering GPS drift, poor accuracy, timeouts, and accessible fallback.
+1. Add an executable browser geolocation adapter example covering permission denial, timeout, unavailable fixes, retry behavior, and accessible manual fallback; keep it separate from the pure evaluator and never treat fallback as proof of presence.
 2. Add a kit-gated content example that demonstrates server-side authorization and replay-safe unlocks.
 3. Add a seasonal leaderboard example with server-side score validation, close times, and privacy controls.
 4. Expand CI to validate Markdown links and every new executable pattern as the cookbook grows.
