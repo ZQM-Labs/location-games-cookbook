@@ -16,7 +16,7 @@ concurrency:
 jobs:
   checkpoint-example:
     name: Checkpoint example (Node.js 20)
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Linux, X64, zqm-linux]
     defaults:
       run:
         working-directory: examples/01-checkpoint-quest
